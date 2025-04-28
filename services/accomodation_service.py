@@ -1,34 +1,25 @@
+from sqlalchemy.orm import Session
+from models.schema import CreateAccommodation, UpdateAccommodation
 from repository import accomodation_repo
-from models.schema import CreateAccomodation, UpdateAccomodation
-from database.database import accomodation
 
+# list all
+def list_all(db: Session):
+    print("All accommodations listed")
+    return accomodation_repo.list_all(db)
 
-def list_all():
-    print("Current accommodations:", accomodation)
-    return accomodation_repo.list_all()
+# find by id
+def find_by_id(db: Session, accommodation_id: int):
+    return accomodation_repo.find_by_id(db, accommodation_id)
 
-def find_by_id(accomodation_id: int):
-    return accomodation_repo.find_by_id(accomodation_id)
+# create
+def createAcc(db: Session, create_data: CreateAccommodation):
+    return accomodation_repo.create_accommodation(db, create_data)
 
-def createAcc(create_data: CreateAccomodation):
-    new_id = len(accomodation) + 1
-    new_acc = {
-        "id": new_id,
-        "name": create_data.name,
-        "category_id": create_data.category_id,
-        "host_id": create_data.host_id,
-        "country_id": create_data.country_id,
-        "numRooms": create_data.numRooms,
-        "isAvailable": create_data.isAvailable
-    }
-    accomodation.append(new_acc)
-    print("succsessfully attached to accomodation")
-    return new_acc
+# update
+def update(db: Session, update_data: UpdateAccommodation, accommodation_id: int):
+    return accomodation_repo.update_by_id(db, update_data,accommodation_id)
 
-
-def update(updateAcc: UpdateAccomodation, accomodation_id: int):
-    return accomodation_repo.update_by_id(updateAcc, accomodation_id)
-
-def delete(accomodation_id: int):
-    accomodation_repo.delete_by_id(accomodation_id)
+# and delete
+def delete(db: Session, accommodation_id: int):
+    accomodation_repo.delete_by_id(db, accommodation_id)
 

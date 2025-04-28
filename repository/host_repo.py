@@ -1,11 +1,9 @@
-from database.database import host
+from sqlalchemy.orm import Session
 
+from models.models import Host
 
-def list_all():
-    return host
+def list_all(db: Session):
+    return db.query(Host).all()
 
-def find_by_id(host_id: int):
-    for hosts in host:
-        if hosts["id"] == host_id:
-            return hosts
-    return None
+def find_by_id(db: Session ,host_id: int):
+    return db.query(Host).filter(Host.id == host_id).first()

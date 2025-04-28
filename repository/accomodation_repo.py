@@ -1,61 +1,49 @@
-from database.database import accomodation
-from models.schema import CreateAccomodation, UpdateAccomodation
-from database.database import category, host
+from sqlalchemy.orm import  Session
+from models.models import Accommodation, Host
+from models.schema import CreateAccommodation, UpdateAccommodation
 
 
-def list_all():
-    return accomodation
+def list_all(db: Session):
+    return db.query(Accommodation).all()
 
-def find_by_id(accomodation_id: int):
-    for accomodations in accomodation:
-        if accomodations["id"] == accomodation_id:
-            return accomodations
-    return None
-
-def find_cat_by_id(category_id: int):
-    for cat in category:
-        if cat["id"] == category_id:
-            return cat
-    return None
-
-def find_host_by_id(host_id:int):
-    for hosts in host:
-        if host["id"] == host_id:
-            return hosts
-    return None
+def find_by_id(db: Session, accommodation_id: int):
+   return db.query(Accommodation).filter(Accommodation.id == accommodation_id).first()
 
 
-def create_accomodation(create_accomodotian: CreateAccomodation):
-    new_accomodation = {
-        "id": len(accomodation) + 1,
-          "name": create_accomodotian.name,
-        "category_id": create_accomodotian.category_id,
-        "host_id": create_accomodotian.host_id,
-        "country_id": create_accomodotian.country_id,
-        "numRooms": create_accomodotian.numRooms,
-        "isAvailable": create_accomodotian.isAvailable
-    }
-    accomodation.append(new_accomodation)
-    return new_accomodation
+def create_accommodation(db: Session, create_accommodation: CreateAccommodation):
+    host_id = db.query(Host).filter(Host.id == create_accommodation.host_id).first()
 
-def update_by_id(update_accomodation: UpdateAccomodation, accomodation_id: int):
-    accomodation = find_by_id(accomodation_id)
+    new_accommodation = Accommodation(
+       name = create_accommodation.name,
+       numRooms = create_accommodation.numRooms,
+       isAvailable = create_accommodation.isAvailable,
+       host_id = host_id )
 
-    if not accomodation:
+    db.add(new_accommodation)
+    db.commit()
+    db.refresh(new_accommodation)
+
+    return new_accommodation
+
+def update_by_id(db: Session, update_accommodation: UpdateAccommodation, accommodation_id: int):
+    accommodation = find_by_id(db, accommodation_id)
+
+    if not accommodation:
         return
 
-    accomodation["name"] = update_accomodation.name
-    accomodation["category_id"] = update_accomodation.category_id
-    accomodation["host_id"] = update_accomodation.host_id
-    accomodation["country_id"] = update_accomodation.country_id
-    accomodation["numRooms"] = update_accomodation.numRooms
-    accomodation["isAvailable"] = update_accomodation.isAvailable
+    for key, value in update_accommodation.model_dump(exclude_unset=True).items():
+        setattr(accommodation, key, value)
 
-def delete_by_id(accomodation_id: int):
-    accomodation = find_by_id(accomodation_id)
+    db.commit()
+    db.refresh()
 
-    if not accomodation:
-        return
+    return accommodation
 
-    accomodation.remove(accomodation)
-    return True
+def delete_by_id(db: Session, accommodation_id: int):
+    accommodation = find_by_id(db, accommodation_id)
+
+    if accommodation:
+        db.delete(accommodation)
+        db.commit()
+
+    return accommodation

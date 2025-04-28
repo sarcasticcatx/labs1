@@ -1,11 +1,9 @@
-from database.database import countries
+from sqlalchemy.orm import  Session
 
+from models.models import Country
 
-def list_all():
-    return countries
+def list_all(db: Session):
+    return db.query(Country).all()
 
-def find_by_id(country_id: int):
-    for count in countries:
-        if count["id"] == country_id:
-            return count
-    return None
+def find_by_id(db: Session, country_id: int):
+    return db.query(Country).filter(Country.id == country_id).first()

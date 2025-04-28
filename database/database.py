@@ -1,12 +1,14 @@
-category = [
-    {"id": 1, "name": "Hotel"},
-    {"id": 2, "name": "Apartment"},
-    {"id": 3, "name": "Flat"},]
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-countries = []
+DATABASE_URL = "sqlite:///./rentals.db"
 
-host = [
-    {"id": 1, "name": "Alice"},
-    {"id": 2, "name": "Bob"},]
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-accomodation = []
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

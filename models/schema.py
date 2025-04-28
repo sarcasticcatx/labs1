@@ -13,28 +13,38 @@ class Category(Enum):
     Motel = "Motel"
 
 
-class Country(BaseModel):
+class CountrySchema(BaseModel):
     id: int
     name: str
     continent: str
 
+    class Config:
+        from_attributes = True
 
-class Host(BaseModel):
+
+class HostSchema(BaseModel):
     id: int
     name: str
     surname: str
-    country: Country
+    country: CountrySchema
 
-class Accomodation(BaseModel):
+    class Config:
+        from_attributes = True
+
+
+class AccommodationSchema(BaseModel):
     id: int
     name: str
     category: Category
-    host: Host
+    host: HostSchema
     numRooms: int
     isAvailable: bool
 
+    class Config:
+        from_attributes = True
 
-class CreateAccomodation(BaseModel):
+#UFO(DTO) - i joke heh
+class CreateAccommodation(BaseModel):
     name: str
     category_id: int
     host_id: int
@@ -43,11 +53,9 @@ class CreateAccomodation(BaseModel):
     isAvailable: bool
 
 
-class UpdateAccomodation(BaseModel):
+class UpdateAccommodation(BaseModel):
     name: Optional[str] = None
     category_id: Optional[int] = None
     host_id: Optional[int] = None
     country_id: Optional[int] = None
     isAvailable: Optional[bool] = None
-
-
