@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
@@ -8,8 +8,8 @@ class Accommodation(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    numRooms = Column(Integer)
-    isAvailable = Column(Boolean)
+    # numRooms = Column(Integer)
+    # isAvailable = Column(Boolean)
 
     host_id = Column(Integer, ForeignKey("host.id"))
     host = relationship("Host", back_populates="accommodation")

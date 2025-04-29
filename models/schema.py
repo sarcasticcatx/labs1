@@ -35,15 +35,15 @@ class HostSchema(BaseModel):
 class AccommodationSchema(BaseModel):
     id: int
     name: str
-    category: Category
+    # category: Category
     host: HostSchema
-    numRooms: int
-    isAvailable: bool
+    # numRooms: int
+    # isAvailable: bool
 
     class Config:
         from_attributes = True
 
-#UFO(DTO) - i joke heh
+# DTO
 class CreateAccommodation(BaseModel):
     name: str
     category_id: int

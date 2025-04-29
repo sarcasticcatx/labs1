@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import sqlite3
 
-DATABASE_URL = "sqlite:///./rentals.db"
+DATABASE_URL = "sqlite:///./rental.db"
+
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -12,3 +14,11 @@ def get_db():
         yield db
     finally:
         db.close()
+
+try:
+    conn = sqlite3.connect('rental.db')
+    print("Connected to SQLite")
+    conn.close()
+except sqlite3.Error as e:
+    print(f"SQLite error: {e}")
+

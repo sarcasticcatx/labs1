@@ -15,8 +15,8 @@ def create_accommodation(db: Session, create_accommodation: CreateAccommodation)
 
     new_accommodation = Accommodation(
        name = create_accommodation.name,
-       numRooms = create_accommodation.numRooms,
-       isAvailable = create_accommodation.isAvailable,
+       # numRooms = create_accommodation.numRooms,
+       # isAvailable = create_accommodation.isAvailable,
        host_id = host_id )
 
     db.add(new_accommodation)
