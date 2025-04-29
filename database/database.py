@@ -15,10 +15,4 @@ def get_db():
     finally:
         db.close()
 
-try:
-    conn = sqlite3.connect('rental.db')
-    print("Connected to SQLite")
-    conn.close()
-except sqlite3.Error as e:
-    print(f"SQLite error: {e}")
 
