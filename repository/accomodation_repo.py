@@ -1,4 +1,6 @@
 from sqlalchemy.orm import  Session
+
+
 from models.models import Accommodation, Host
 from models.schema import CreateAccommodation, UpdateAccommodation
 
@@ -15,9 +17,10 @@ def create_accommodation(db: Session, create_accommodation: CreateAccommodation)
 
     new_accommodation = Accommodation(
        name = create_accommodation.name,
-       # numRooms = create_accommodation.numRooms,
-       # isAvailable = create_accommodation.isAvailable,
-       host_id = host_id )
+       numRooms = create_accommodation.numRooms,
+       isAvailable = create_accommodation.isAvailable,
+        category = create_accommodation.category,
+       host_id = create_accommodation.host_id )
 
     db.add(new_accommodation)
     db.commit()
@@ -35,7 +38,7 @@ def update_by_id(db: Session, update_accommodation: UpdateAccommodation, accommo
         setattr(accommodation, key, value)
 
     db.commit()
-    db.refresh()
+    db.refresh(accommodation)
 
     return accommodation
 

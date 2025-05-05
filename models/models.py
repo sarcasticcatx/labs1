@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Enum
 from sqlalchemy.orm import relationship, declarative_base
+
+from models.schema import Category
 
 Base = declarative_base()
 
@@ -8,11 +10,12 @@ class Accommodation(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    # numRooms = Column(Integer)
-    # isAvailable = Column(Boolean)
+    numRooms = Column(Integer)
+    category = Column(Enum(Category), nullable=False)
+    isAvailable = Column(Boolean)
 
     host_id = Column(Integer, ForeignKey("host.id"))
-    host = relationship("Host", back_populates="accommodation")
+    # host = relationship("Host", back_populates="accommodation")
 
 
 class Host(Base):
@@ -32,5 +35,4 @@ class Country(Base):
     name = Column(String)
     continent = Column(String)
 
-    hosts = relationship("Host", back_populates="country")
-
+    host = relationship("Host", back_populates="country")

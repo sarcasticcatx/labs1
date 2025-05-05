@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+
 class Category(Enum):
     Room = "Room"
     House = "House"
@@ -36,9 +37,9 @@ class AccommodationSchema(BaseModel):
     id: int
     name: str
     # category: Category
-    host: HostSchema
-    # numRooms: int
-    # isAvailable: bool
+    # host: HostSchema
+    numRooms: int
+    isAvailable: bool
 
     class Config:
         from_attributes = True
@@ -46,9 +47,9 @@ class AccommodationSchema(BaseModel):
 # DTO
 class CreateAccommodation(BaseModel):
     name: str
-    category_id: int
-    host_id: int
-    country_id: int
+    category: Optional[Category] = None
+    host_id: Optional[int] = None
+    country_id: Optional[int] = None
     numRooms: int
     isAvailable: bool
 
@@ -59,3 +60,4 @@ class UpdateAccommodation(BaseModel):
     host_id: Optional[int] = None
     country_id: Optional[int] = None
     isAvailable: Optional[bool] = None
+
