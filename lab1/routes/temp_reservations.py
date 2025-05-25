@@ -11,7 +11,7 @@ from lab1.models.models import TemporaryAccommodation
 router = APIRouter(prefix="/api/temp-accommodation", tags=["TemporaryAccommodationSchema"])
 
 @router.post("/temporary-res", response_model=TemporaryAccommodationSchema)
-async def createTempAcc(createTempAcc: CreateTempAcc, db: Session = Depends(get_db())):
+async def createTempAcc(createTempAcc: CreateTempAcc, db: Session = Depends(get_db)):
     try:
         new_temp_accommodation = accomodation_service.createTempAcc(db, createTempAcc)
         if not new_temp_accommodation:
@@ -21,7 +21,7 @@ async def createTempAcc(createTempAcc: CreateTempAcc, db: Session = Depends(get_
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("reserve-all-temp-acc", response_model=dict)
-async def reserve_all_temp_accommodations(user_id: int, db: Session = Depends(get_db())):
+async def reserve_all_temp_accommodations(user_id: int, db: Session = Depends(get_db)):
     try:
         result = accomodation_service.createTempAcc(db, user_id)
         if not result:
