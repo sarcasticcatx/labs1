@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from typing import Optional, List
 from pydantic import BaseModel
@@ -88,6 +88,8 @@ class TemporaryAccommodationSchema(BaseModel):
 class CreateTempAcc(BaseModel):
     user_id: int
     accommodation_id: int
+    start: datetime
+    end: datetime
 
 
 class AccommodationReservationsForUserSchema(BaseModel):

@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-from lab1.models.models import Accommodation, TemporaryAccommodation
+from lab1.models.models import Accommodation, TemporaryAccommodation, Reservation
 from lab1.models.schema import CreateAccommodation, UpdateAccommodation, CreateTempAcc
 from lab1.repository import accomodation_repo
 
@@ -92,6 +92,23 @@ def createTempAcc(db: Session, create_data: CreateTempAcc):
         return new_temp_acc
 
 
+def reserve_all_temp_acc(db: Session, user_id: int):
+    temp_list = db.query(TemporaryAccommodation).filter_by(user_id=user_id).all()
+    if not temp_list:
+        return False
+
+    for temp in temp_list:
+        reservation = Reservation(
+            accommodation_id=temp.accommodation_id,
+            user_id=temp.user_id,
+            start=temp.start,
+            end=temp.end
+        )
+        db.add(reservation)
+        db.delete(temp)
+
+    db.commit()
+    return {"message": "All temporary reservations have been confirmed."}
 
 
 

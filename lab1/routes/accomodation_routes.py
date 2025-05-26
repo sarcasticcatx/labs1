@@ -35,7 +35,6 @@ async def find_by_id(accommodation_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 #овозможете корисниците да додаваат сместувања во својата листа на привремени
 #резервации и да ја прегледуваат пред да ја потврдат резервацијата
 @router.get("/temp-reservation/{user_id}")
@@ -58,14 +57,9 @@ async def createAcc(createAcc: CreateAccommodation, db: Session = Depends(get_db
 
 
 
-@router.post("/temp-accommodations", response_model=TemporaryAccommodationSchema)
-async def add_temp_accommodation(temp_acc: CreateTempAcc, db: Session = Depends(get_db)):
-    return create_temp_acc(db, temp_acc)
-
-
 #корисникот може да додава повеќе резервации во листата,
 #но не може да додаде резервација за некое сместување што веќе е во листата
-@router.post("/temp-reservation" )
+@router.post("/temp-reservation")
 def create_temp_reservation(create_data: CreateTempAcc, db: Session = Depends(get_db)):
     return accomodation_service.createTempAcc(db, create_data)
 
@@ -73,7 +67,7 @@ def create_temp_reservation(create_data: CreateTempAcc, db: Session = Depends(ge
 
 
 
-@router.put("/{accommodation_id}", response_model=AccommodationSchema)
+@router.put("/edit/{accommodation_id}", response_model=AccommodationSchema)
 async def update_by_id(accommodation_id:int, update_acc: UpdateAccommodation, db: Session = Depends(get_db)):
     try:
         acc = accomodation_service.find_by_id(db, accommodation_id)

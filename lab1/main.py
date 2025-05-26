@@ -31,4 +31,8 @@ app.add_middleware(
 #     return {"message": "List of accommodations"}
 
 app.include_router(accomodation_routes.router)
-app.include_router(temp_reservations.router)
+# app.include_router(temp_reservations.router)
+
+print("Registered routes:")
+for route in app.routes:
+    print(f"{route.path} -> {route.name} [{route.methods}]")
